@@ -1,0 +1,10 @@
+web:
+  build: .
+  volumes:
+    - ".:/app"
+  ports:
+    - "3000:80"
+  command: nodemon -L  /app/bin/www
+
+redis:
+  image: redis

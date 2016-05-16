@@ -1,0 +1,27 @@
+{
+  "name": "aegis-passport",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "a": "node a.js > a.log 2>&1 &",
+    "b": "node a.js > b.log 2>&1 &"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "co": "^4.6.0",
+    "connect-redis": "^3.0.2",
+    "cookie-parser": "~1.3.5",
+    "cookieparser": "^0.1.0",
+    "debug": "~2.2.0",
+    "ejs": "^2.4.1",
+    "express": "~4.13.1",
+    "express-session": "^1.13.0",
+    "helmet": "^1.3.0",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "restler": "^3.4.0",
+    "restler-bluebird": "^0.2.2",
+    "serve-favicon": "~2.3.0"
+  }
+}

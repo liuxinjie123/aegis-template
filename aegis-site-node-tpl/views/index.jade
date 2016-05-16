@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  form(action="/login?action=doLogin",method="POST")
+    p
+      label
+        用户名：
+        input(type="text",name="userName")
+    p
+      label
+        密码:
+        input(type="password",name="pwd")
+    p
+      input(type="hidden",value="#{title}",name="goto")
+      input(type="submit",value="按钮")
+  br
+  p Welcome to #{title}
+  p #{error}
+
+  br
+  br
