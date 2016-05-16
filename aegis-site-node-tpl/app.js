@@ -51,7 +51,14 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 if (!module.parent) {
-    app.set('port', 8081);
+    var port; 
+    if( process.env.DOMAIN == 'a') {
+        port = 3001;
+    } else if( process.env.DOMAIN == 'b') {
+        port = 3002;
+    }
+    app.set('port', port);
+    
     var server = app.listen(app.get('port'), function() {
         console.log('Express started on http://localhost:' +
             app.get('port') + '; press Ctrl-C to terminate.');

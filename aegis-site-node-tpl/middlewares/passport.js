@@ -7,10 +7,12 @@ var path = require('path');
 var auth = function(req, res, next) {
     // session中没有用户信息, 
     if( !req.session || !req.session.user ) {
+        
+        var gotoURL = req.referer;  // 这样应该是没有问题的, 因为POST后面都会加redirect, 地址栏的总是可以访问的!!!!
+        
         // 没有passportCookie, 用户没有登录过, 直接跳转到登录系统
         if ( !req.cookies[config.passportCookie]) {
-            var gotoURL = req.referer;  // 这样应该是没有问题的, 因为POST后面都会加redirect, 地址栏的总是可以访问的!!!!
-            res.redirect(config.passportLogin + '?gotoURL=' + gotoURL);
+            res.redirect(config.passportLogin + '?gotoURL=' + gotoURL + "&from=" + process.env.DOMAIN);
             return;
         }
         // cookie中有passport, 但是session中没有用户信息, 则调用sso的认证接口
@@ -27,7 +29,7 @@ var auth = function(req, res, next) {
                 }
                 // 单点登录auth失败    
                 else {
-                    res.redirect(config.passportLogin + '&gotoURL=' + (req.host + ':8081' + req.path) ); 
+                    res.redirect(config.passportLogin + '?gotoURL=' + gotoURL + "&from=" + process.env.DOMAIN);
                 }
             });
         }

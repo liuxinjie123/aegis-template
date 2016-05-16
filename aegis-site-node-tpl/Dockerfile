@@ -1,6 +1,9 @@
-FROM:
+FROM readytalk/nodejs
 
-MAINTAINER:
+MAINTAINER: hary zhou <94093146@qq.com>
 
+VOLUME /app
 
-VOLUME:
+WORKDIR /app
+
+CMD nodemon app.js

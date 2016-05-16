@@ -28,20 +28,21 @@ router.get('/login', function (req, res) {
 
 //
 // jsonp-ajax
-// /setcookie?callback=xxxxxt  用于设jsonp设置passportCookie 
+// /setcookie?callback=$callbackName&passport=$passport  用于设jsonp设置passportCookie 
 //
 router.get('/setcookie', function (req, res) {
     
     var jsonpCallback = req.query.callback; 
+    var passport = req.query.passport;
    
     // 种cookie
-    res.cookie(config.passportCookie, req.query.passport, {
+    res.cookie(config.passportCookie, passport, {
         domain: config.domain,
         expires: new Date(),   // todo  wangqi
     });
     
     // jsonp应答
-    res.send(jsonpCallback + "()");
+    res.send(jsonpCallback + "({})");
 });
 
 // 用户点击登出
