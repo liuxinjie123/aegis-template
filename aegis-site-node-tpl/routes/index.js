@@ -13,9 +13,10 @@ var multiline = require('multiline');
 //
 router.get('/', function (req, res) {
     var str = multiline(function(){/*
-        <a href="http://www.a.com:8081/login">直接登录</a> 
-        <a href="http://passport.a.com">直接登出</a>
-        <a href="/orders">显示订单</a>'); 
+        <a href="/login">直接登录</a>
+        <a href="/register">直接注册</a>
+        <a href="/logout">直接登出</a>
+        <a href="/order">显示订单</a>
     */});
     res.send(str);
 });
@@ -23,7 +24,16 @@ router.get('/', function (req, res) {
 // 用户点击登录, 直接跳转到登录界面
 router.get('/login', function (req, res) {
     "use strict";
-    res.redirect(config.passportLogin);
+    var gotoURL = req.headers['referer'];
+    res.redirect(config.passportLogin + '?gotoURL=' + gotoURL + "&from=" + process.env.DOMAIN);
+})
+
+
+// 用户点击注册, 直接跳转到注册界面
+router.get('/register', function (req, res) {
+    "use strict";
+    var gotoURL = req.headers['referer'];
+    res.redirect(config.passportRegister + '?gotoURL=' + gotoURL + "&from=" + process.env.DOMAIN);
 })
 
 //
@@ -38,7 +48,7 @@ router.get('/setcookie', function (req, res) {
     // 种cookie
     res.cookie(config.passportCookie, passport, {
         domain: config.domain,
-        expires: new Date(),   // todo  wangqi
+        expires: new Date(Date.now() + 900000),   // todo  wangqi
     });
     
     // jsonp应答
@@ -49,19 +59,26 @@ router.get('/setcookie', function (req, res) {
 router.get('/logout', function (req, res) {
     
     // 清空user
-    req.session.user = undef;
-   
+    req.session.user = undefined;
+
+    var temp = req.cookies[config.passportCookie];
     // 清空passport cookie
-    req.cookies[config.passportCookie] = undef;
+    //req.cookies[config.passportCookie] = undefined;
+    //res.clearCookie(config.passportCookie,{path:'/'});
+    res.cookie(config.passportCookie, '', { domain: config.domain,expires: new Date()});
     
     // 通知sso用户已经登出
     restler.post(config.passportLogout, {
-        passort: req.cookies[config.passportCookie]
+        data:{
+            passport:temp
+        }
     }).then(function(resp){
         "use strict";
         res.redirect("/");   // 重定向到主页
     })
     return;
 });
+
+module.exports = router;
 
 

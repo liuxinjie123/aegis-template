@@ -56,7 +56,10 @@ if (!module.parent) {
         port = 3001;
     } else if( process.env.DOMAIN == 'b') {
         port = 3002;
+    }else{
+        port = 3001;
     }
+
     app.set('port', port);
     
     var server = app.listen(app.get('port'), function() {

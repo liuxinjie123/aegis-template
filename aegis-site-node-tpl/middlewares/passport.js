@@ -8,7 +8,7 @@ var auth = function(req, res, next) {
     // session中没有用户信息, 
     if( !req.session || !req.session.user ) {
         
-        var gotoURL = req.referer;  // 这样应该是没有问题的, 因为POST后面都会加redirect, 地址栏的总是可以访问的!!!!
+        var gotoURL = req.headers['referer'];  // 这样应该是没有问题的, 因为POST后面都会加redirect, 地址栏的总是可以访问的!!!!
         
         // 没有passportCookie, 用户没有登录过, 直接跳转到登录系统
         if ( !req.cookies[config.passportCookie]) {
@@ -18,12 +18,14 @@ var auth = function(req, res, next) {
         // cookie中有passport, 但是session中没有用户信息, 则调用sso的认证接口
         else {
             restler.post(config.passportAuth, {
-                passport: req.cookies[config.passportCookie]
+                data:{
+                    passport:req.cookies[config.passportCookie]
+                }
             }).then(function(auth){
                 "use strict";
                 // 认证成功, 设置session中的user
                 if(auth.success) {
-                    res.session.user = auth.user;
+                    req.session.user = auth.user;
                     next();
                     return;
                 }
