@@ -10,6 +10,9 @@ else if( process.env.DOMAIN == 'b') {
 else {
     mydomain = 'www.a.com';
     process.env.DOMAIN='a';
+
+    /*mydomain = 'www.b.com';
+    process.env.DOMAIN='b';*/
     //console.error("必须设置DOMAIN!!!, example: DOMAIN=a; node app.js");
     //process.exit(-1);
 }
@@ -29,7 +32,7 @@ module.exports = {
     passportLogin: 'http://passport.yimei180.com:3000/login',
     
     // 成员网站调用passport网站的auth接口,
-    passportAuth: 'http://passport.yimei180.com:3000/api/auth',
+    passportAuth: 'http://passport.yimei180.com:3000/auth',
 
     // logout服务是需要
     passportLogout: 'http://passport.yimei180.com:3000/api/logout'
